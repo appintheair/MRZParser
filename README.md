@@ -1,2 +1,3 @@
 # MRZParser
-Library for parsing MRZ code
+
+A description of this package.

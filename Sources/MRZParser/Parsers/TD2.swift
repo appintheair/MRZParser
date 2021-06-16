@@ -9,18 +9,18 @@ import Foundation
 
 class TD2 {
     static let lineLength = 36
-    fileprivate let finalCheckDigit: String?
-    let documentType: MRZField
-    let countryCode: MRZField
-    let names: MRZField
-    let documentNumber: MRZField
-    let nationality: MRZField
-    let birthdate: MRZField
-    let sex: MRZField
-    let expiryDate: MRZField
-    let optionalData: MRZField
+    private let finalCheckDigit: String?
+    private let documentType: MRZField
+    private let countryCode: MRZField
+    private let names: MRZField
+    private let documentNumber: MRZField
+    private let nationality: MRZField
+    private let birthdate: MRZField
+    private let sex: MRZField
+    private let expiryDate: MRZField
+    private let optionalData: MRZField
     
-    fileprivate lazy var allCheckDigitsValid: Bool = {
+    private lazy var allCheckDigitsValid: Bool = {
         if let checkDigit = finalCheckDigit {
             let compositedValue = [documentNumber, birthdate, expiryDate, optionalData].reduce("", { ($0 + $1.rawValue + ($1.checkDigit ?? "")) })
             let isCompositedValueValid = MRZField.isValueValid(compositedValue, checkDigit: checkDigit)

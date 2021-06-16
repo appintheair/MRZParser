@@ -8,9 +8,9 @@
 import Foundation
 
 public class MRZParser {
-    let formatter: MRZFieldFormatter
+    private let formatter: MRZFieldFormatter
 
-    enum MRZFormat: Int {
+    private enum MRZFormat: Int {
         case td1, td2, td3, invalid
     }
 
@@ -37,7 +37,7 @@ public class MRZParser {
     }
 
     // MARK: MRZ-Format detection
-    fileprivate func mrzFormat(from mrzLines: [String]) -> MRZFormat {
+    private func mrzFormat(from mrzLines: [String]) -> MRZFormat {
         switch mrzLines.count {
         case 2:
             let lineLength = uniformedLineLength(for: mrzLines)
@@ -55,7 +55,7 @@ public class MRZParser {
         }
     }
 
-    fileprivate func uniformedLineLength(for mrzLines: [String]) -> Int? {
+    private func uniformedLineLength(for mrzLines: [String]) -> Int? {
         guard let lineLength = mrzLines.first?.count else {
             return nil
         }

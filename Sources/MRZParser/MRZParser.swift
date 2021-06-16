@@ -36,6 +36,23 @@ public class MRZParser {
         return parse(mrzLines: mrzString.components(separatedBy: "\n"))
     }
 
+    // MARK: Line validation
+    public func isLineValid(line: String) -> Bool {
+        guard let format = [MRZFormat.td1: TD1.lineLength, MRZFormat.td2: TD2.lineLength, .td3: TD3.lineLength]
+                .first(where: { $0.value == line.count })?.key else { return false }
+
+        switch format {
+        case .td1:
+            return TD1.isLineValid(line: line)
+        case .td2:
+            return TD2.isLineValid(line: line)
+        case .td3:
+            return TD3.isLineValid(line: line)
+        case .invalid:
+            return false
+        }
+    }
+
     // MARK: MRZ-Format detection
     private func mrzFormat(from mrzLines: [String]) -> MRZFormat {
         switch mrzLines.count {

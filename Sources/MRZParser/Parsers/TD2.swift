@@ -9,6 +9,11 @@ import Foundation
 
 class TD2 {
     static let lineLength = 36
+    static func isLineValid(line: String) -> Bool {
+        // TODO: Line validation
+        return true
+    }
+    
     private let finalCheckDigit: String?
     private let documentType: MRZField
     private let countryCode: MRZField
@@ -54,7 +59,7 @@ class TD2 {
             allCheckDigitsValid: allCheckDigitsValid
         )
     }()
-    
+
     init(from mrzLines: [String], using formatter: MRZFieldFormatter) {
         let (firstLine, secondLine) = (mrzLines[0], mrzLines[1])
         /// MRV-B type

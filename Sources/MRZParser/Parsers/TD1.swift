@@ -9,6 +9,11 @@ import Foundation
 
 class TD1 {
     static let lineLength = 30
+    static func isLineValid(line: String) -> Bool {
+        // TODO: Line validation
+        return true
+    }
+
     private let finalCheckDigit: String
     private let documentType: MRZField
     private let countryCode: MRZField
@@ -22,7 +27,8 @@ class TD1 {
     private let names: MRZField
 
     private lazy var allCheckDigitsValid: Bool = {
-        let compositedValue = [documentNumber, optionalData, birthdate, expiryDate, optionalData2].reduce("", { ($0 + $1.rawValue + ($1.checkDigit ?? "")) })
+        let compositedValue = [documentNumber, optionalData, birthdate, expiryDate, optionalData2]
+            .reduce("", { ($0 + $1.rawValue + ($1.checkDigit ?? "")) })
         let isCompositedValueValid = MRZField.isValueValid(compositedValue, checkDigit: finalCheckDigit)
         return (documentNumber.isValid! && birthdate.isValid! && expiryDate.isValid! && isCompositedValueValid)
     }()
@@ -53,12 +59,12 @@ class TD1 {
     
     init(from mrzLines: [String], using formatter: MRZFieldFormatter) {
         let (firstLine, secondLine, thirdLine) = (mrzLines[0], mrzLines[1], mrzLines[2])
-        
+
         documentType = formatter.createField(type: .documentType, from: firstLine, at: 0, length: 2)
         countryCode = formatter.createField(type: .countryCode, from: firstLine, at: 2, length: 3)
         documentNumber = formatter.createField(type: .documentNumber, from: firstLine, at: 5, length: 9, checkDigitFollows: true)
         optionalData = formatter.createField(type: .optionalData, from: firstLine, at: 15, length: 15)
-        
+
         birthdate = formatter.createField(type: .birthdate, from: secondLine, at: 0, length: 6, checkDigitFollows: true)
         sex = formatter.createField(type: .sex, from: secondLine, at: 7, length: 1)
         expiryDate = formatter.createField(type: .expiryDate, from: secondLine, at: 8, length: 6, checkDigitFollows: true)

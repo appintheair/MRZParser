@@ -9,6 +9,11 @@ import Foundation
 
 class TD3 {
     static let lineLength = 44
+    static func isLineValid(line: String) -> Bool {
+        // TODO: Line validation
+        return true
+    }
+
     private let finalCheckDigit: String?
     private let documentType: MRZField
     private let countryCode: MRZField

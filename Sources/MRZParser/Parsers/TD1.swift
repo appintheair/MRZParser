@@ -7,9 +7,9 @@
 
 import Foundation
 
-class TD1 {
-    static let lineLength = 30
-    static let linesCount = 3
+public class TD1 {
+    public static let lineLength = 30
+    public static let linesCount = 3
     static func isLineValid(line: String) -> Bool {
         // TODO: Line validation
         return true

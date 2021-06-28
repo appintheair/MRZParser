@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: Parser related
 extension String {
-    func trimmingFillers() -> String {
+    var trimmingFillers: String {
         return trimmingCharacters(in: CharacterSet(charactersIn: "<"))
     }
 }
@@ -17,7 +17,7 @@ extension String {
 // MARK: Generic
 extension String {
     func replace(_ target: String, with: String) -> String {
-        return replacingOccurrences(of: target, with: with, options: .literal, range: nil)
+        replacingOccurrences(of: target, with: with, options: .literal, range: nil)
     }
 
     func substring(_ from: Int, to: Int) -> String {

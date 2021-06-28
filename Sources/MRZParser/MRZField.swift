@@ -27,7 +27,7 @@ struct MRZField {
     // MARK: Static
     static func isValueValid(_ value: String, checkDigit: String) -> Bool {
         guard let numericCheckDigit = Int(checkDigit) else {
-            return checkDigit == "<" ? value.trimmingFillers().isEmpty : false
+            return checkDigit == "<" ? value.trimmingFillers.isEmpty : false
         }
 
         var total = 0

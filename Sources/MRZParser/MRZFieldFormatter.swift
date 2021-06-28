@@ -74,7 +74,7 @@ class MRZFieldFormatter {
 
     // MARK: Value Formatters
     private func names(from string: String) -> (primary: String, secondary: String) {
-        let identifiers = string.trimmingFillers().components(separatedBy: "<<").map({ $0.replace("<", with: " ") })
+        let identifiers = string.trimmingFillers.components(separatedBy: "<<").map({ $0.replace("<", with: " ") })
         let secondaryID = identifiers.indices.contains(1) ? identifiers[1] : ""
         return (primary: identifiers[0], secondary: secondaryID)
     }
@@ -83,15 +83,13 @@ class MRZFieldFormatter {
         switch string {
         case "M": return "MALE"
         case "F": return "FEMALE"
-        case "<": return "UNSPECIFIED" // X
+        case "<": return "UNSPECIFIED"
         default: return nil
         }
     }
 
     private func birthdate(from string: String) -> Date? {
-        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) else {
-            return nil
-        }
+        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) else { return nil }
 
         let currentYear = Calendar.current.component(.year, from: Date()) - 2000
         let parsedYear = Int(string.substring(0, to: 1))!
@@ -101,9 +99,7 @@ class MRZFieldFormatter {
     }
 
     private func expiryDate(from string: String) -> Date? {
-        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) else {
-            return nil
-        }
+        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) else { return nil }
 
         let parsedYear = Int(string.substring(0, to: 1))!
         let centennial = (parsedYear >= 70) ? "19" : "20"
@@ -112,7 +108,7 @@ class MRZFieldFormatter {
     }
 
     private func text(from string: String) -> String {
-        return string.trimmingFillers().replace("<", with: " ")
+        string.trimmingFillers.replace("<", with: " ")
     }
 
     // MARK: Utils

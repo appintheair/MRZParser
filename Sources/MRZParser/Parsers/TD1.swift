@@ -2,11 +2,12 @@
 //  TD1.swift
 //  QKMRZParser
 //
-//  Created by Matej Dorcak on 14/10/2018.
+//  Created by Roman Mazeev on 14/10/2018.
 //
 
 import Foundation
 
+// MARK: - TD1
 //Params:                      Case insensitive
 //
 //    document_type    (str):  The first letter shall be 'I', 'A' or 'C'

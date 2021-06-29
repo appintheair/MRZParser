@@ -2,11 +2,12 @@
 //  TD2.swift
 //  QKMRZParser
 //
-//  Created by Matej Dorcak on 14/10/2018.
+//  Created by Roman Mazeev on 14/10/2018.
 //
 
 import Foundation
 
+// MARK: - TD2
 //Params:                      Case insensitive
 //
 //    document_type    (str):  The first letter shall be 'I', 'A' or 'C'
@@ -25,6 +26,24 @@ import Foundation
 //                             Allows to use 3-letter-codes not included in the countries dictionary
 //                             and to use document_type codes without restrictions.
 
+// MARK: - MRVB (Visas type B)
+//Params:                      Case insensitive
+//
+//    document_type    (str):  The First letter must be 'V'
+//    country_code     (str):  3 letters code (ISO 3166-1) or country name (in English)
+//    surname          (str):  Primary identifier(s)
+//    given_names      (str):  Secondary identifier(s)
+//    document_number  (str):  Document number
+//    nationality      (str):  3 letters code (ISO 3166-1) or country name
+//    birth_date       (str):  YYMMDD
+//    sex              (str):  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
+//    expiry_date      (str):  YYMMDD
+//    optional_data    (str):  Optional personal data at the discretion of the issuing State.
+//                             Non-mandatory field. Empty string by default.
+//    transliteration (dict):  Transliteration dictionary for non-ascii chars. Latin based by default
+//    force           (bool):  Disables checks for country, nationality and document_type fields.
+//                             Allows to use 3-letter-codes not included in the countries dictionary
+//                             and to use document_type codes without restrictions.
 public class TD2 {
     public static let lineLength = 36
     public static let linesCount = 2

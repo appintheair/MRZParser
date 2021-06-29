@@ -27,6 +27,7 @@ public struct MRZResult: Equatable {
     public let isDocumentNumberValid: Bool
     public let isBirthdateValid: Bool
     public let isExpiryDateValid: Bool
+    /// `nil` if `personalNumber` is not provided
     public let isPersonalNumberValid: Bool?
     public let allCheckDigitsValid: Bool
 }

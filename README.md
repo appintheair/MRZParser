@@ -1,4 +1,4 @@
-[![Swift](https://github.com/romanmazeev/MRZParser/actions/workflows/swift.yml/badge.svg?branch=main)](https://github.com/romanmazeev/MRZParser/actions/workflows/swift.yml)
+[![Swift](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml/badge.svg?branch=main)](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml)
 # MRZParser
 Parser MRZ code for TD1, TD2, TD3, MRVA (Visas type A), MRVB (Visas type B) types.
 

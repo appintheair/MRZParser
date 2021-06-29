@@ -2,104 +2,81 @@
 # MRZParser
 Parser MRZ code for TD1, TD2, TD3, MRVA (Visas type A), MRVB (Visas type B) types.
 
-## Parsing description:
+## Fields Distribution of Official Travel Documents:
+![image](https://raw.githubusercontent.com/appintheair/MRZParser/develop/docs/img/Fields_Distribution.png)
 #### TD1's (id cards):
 
     Params:                      Case insensitive
 
-        document_type    (str):  The first letter shall be 'I', 'A' or 'C'
-        country_code     (str):  3 letters code (ISO 3166-1) or country name (in English)
-        document_number  (str):  Document number
-        birth_date       (str):  YYMMDD
-        sex              (str):  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
-        expiry_date      (str):  YYMMDD
-        nationality      (str):  3 letters code (ISO 3166-1) or country name (in English)
-        surname          (str):  Holder primary identifier(s). This field will be transliterated
-        given_names      (str):  Holder secondary identifier(s). This field will be transliterated
-        optional_data1   (str):  Optional personal data at the discretion of the issuing State.
+        document_type         :  The first letter shall be 'I', 'A' or 'C'
+        country_code          :  3 letters code (ISO 3166-1) or country name (in English)
+        document_number       :  Document number
+        birth_date            :  YYMMDD
+        sex                   :  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
+        expiry_date           :  YYMMDD
+        nationality           :  3 letters code (ISO 3166-1) or country name (in English)
+        surname               :  Holder primary identifier(s). This field will be transliterated
+        given_names           :  Holder secondary identifier(s). This field will be transliterated
+        optional_data1        :  Optional personal data at the discretion of the issuing State.
                                  Non-mandatory field. Empty string by default
-        optional_data2   (str):  Optional personal data at the discretion of the issuing State.
-                                 Non-mandatory field. Empty string by default
-        transliteration (dict):  Transliteration dictionary for non-ascii chars. Latin based by default
-        force           (bool):  Disables checks for country, nationality and document_type fields.
-                                 Allows to use 3-letter-codes not included in the countries dictionary
-                                 and to use document_type codes without restrictions.
-                                 
+        optional_data2        :  Optional personal data at the discretion of the issuing State.
+                                 Non-mandatory field. Empty string by default                        
 #### TD2
 
     Params:                      Case insensitive
 
-        document_type    (str):  The first letter shall be 'I', 'A' or 'C'
-        country_code     (str):  3 letters code (ISO 3166-1) or country name (in English)
-        surname          (str):  Holder primary identifier(s). This field will be transliterated.
-        given_names      (str):  Holder secondary identifier(s). This field will be transliterated.
-        document_number  (str):  Document number.
-        nationality      (str):  3 letters code (ISO 3166-1) or country name
-        birth_date       (str):  YYMMDD
-        sex              (str):  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
-        expiry_date      (str):  YYMMDD
-        optional_data    (str):  Optional personal data at the discretion of the issuing State.
-                                 Non-mandatory field. Empty string by default
-        transliteration (dict):  Transliteration dictionary for non-ascii chars. Latin based by default
-        force           (bool):  Disables checks for country, nationality and document_type fields.
-                                 Allows to use 3-letter-codes not included in the countries dictionary
-                                 and to use document_type codes without restrictions.
-                                 
+        document_type         :  The first letter shall be 'I', 'A' or 'C'
+        country_code          :  3 letters code (ISO 3166-1) or country name (in English)
+        surname               :  Holder primary identifier(s). This field will be transliterated.
+        given_names           :  Holder secondary identifier(s). This field will be transliterated.
+        document_number       :  Document number.
+        nationality           :  3 letters code (ISO 3166-1) or country name
+        birth_date            :  YYMMDD
+        sex                   :  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
+        expiry_date           :  YYMMDD
+        optional_data         :  Optional personal data at the discretion of the issuing State.
+                                 Non-mandatory field. Empty string by default                         
 #### TD3 (Passports)
 
     Params:                      Case insensitive
 
-        document_type    (str):  Normally 'P' for passport
-        country_code     (str):  3 letters code (ISO 3166-1) or country name (in English)
-        surname          (str):  Primary identifier(s)
-        given_names      (str):  Secondary identifier(s)
-        document_number  (str):  Document number
-        nationality      (str):  3 letters code (ISO 3166-1) or country name
-        birth_date       (str):  YYMMDD
-        sex              (str):  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
-        expiry_date      (str):  YYMMDD
-        optional data    (str):  Personal number. In some countries non-mandatory field. Empty string by default
-        transliteration (dict):  Transliteration dictionary for non-ascii chars. Latin based by default
-        force           (bool):  Disables checks for country, nationality and document_type fields.
-                                 Allows to use 3-letter-codes not included in the countries dictionary
-                                 and to use document_type codes without restrictions.
-                                 
+        document_type         :  Normally 'P' for passport
+        country_code          :  3 letters code (ISO 3166-1) or country name (in English)
+        surname               :  Primary identifier(s)
+        given_names           :  Secondary identifier(s)
+        document_number       :  Document number
+        nationality           :  3 letters code (ISO 3166-1) or country name
+        birth_date            :  YYMMDD
+        sex                   :  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
+        expiry_date           :  YYMMDD
+        optional data         :  Personal number. In some countries non-mandatory field. Empty string by default
 #### MRVA (Visas type A)
 
     Params:                      Case insensitive
     
-        document_type    (str):  The First letter must be 'V'
-        country_code     (str):  3 letters code (ISO 3166-1) or country name (in English)
-        surname          (str):  Primary identifier(s)
-        given_names      (str):  Secondary identifier(s)
-        document_number  (str):  Document number
-        nationality      (str):  3 letters code (ISO 3166-1) or country name
-        birth_date       (str):  YYMMDD
-        sex              (str):  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
-        expiry_date      (str):  YYMMDD
-        optional_data    (str):  Optional personal data at the discretion of the issuing State.
-                                 Non-mandatory field. Empty string by default.
-        transliteration (dict):  Transliteration dictionary for non-ascii chars. Latin based by default
-        force           (bool):  Disables checks for country, nationality and document_type fields.
-                                 Allows to use 3-letter-codes not included in the countries dictionary
-                                 and to use document_type codes without restrictions.
-                          
+        document_type         :  The First letter must be 'V'
+        country_code          :  3 letters code (ISO 3166-1) or country name (in English)
+        surname               :  Primary identifier(s)
+        given_names           :  Secondary identifier(s)
+        document_number       :  Document number
+        nationality           :  3 letters code (ISO 3166-1) or country name
+        birth_date            :  YYMMDD
+        sex                   :  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
+        expiry_date           :  YYMMDD
+        optional_data         :  Optional personal data at the discretion of the issuing State.
+                                 Non-mandatory field. Empty string by default.                          
 #### MRVB (Visas type B)
 
     Params:                      Case insensitive
     
-        document_type    (str):  The First letter must be 'V'
-        country_code     (str):  3 letters code (ISO 3166-1) or country name (in English)
-        surname          (str):  Primary identifier(s)
-        given_names      (str):  Secondary identifier(s)
-        document_number  (str):  Document number
-        nationality      (str):  3 letters code (ISO 3166-1) or country name
-        birth_date       (str):  YYMMDD
-        sex              (str):  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
-        expiry_date      (str):  YYMMDD
-        optional_data    (str):  Optional personal data at the discretion of the issuing State.
+        document_type         :  The First letter must be 'V'
+        country_code          :  3 letters code (ISO 3166-1) or country name (in English)
+        surname               :  Primary identifier(s)
+        given_names           :  Secondary identifier(s)
+        document_number       :  Document number
+        nationality           :  3 letters code (ISO 3166-1) or country name
+        birth_date            :  YYMMDD
+        sex                   :  Genre. Male: 'M', Female: 'F' or Undefined: 'X', "<" or ""
+        expiry_date           :  YYMMDD
+        optional_data         :  Optional personal data at the discretion of the issuing State.
                                  Non-mandatory field. Empty string by default.
-        transliteration (dict):  Transliteration dictionary for non-ascii chars. Latin based by default
-        force           (bool):  Disables checks for country, nationality and document_type fields.
-                                 Allows to use 3-letter-codes not included in the countries dictionary
-                                 and to use document_type codes without restrictions.

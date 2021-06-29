@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MRZResult {
+public struct MRZResult: Equatable {
     public let documentType: String
     public let countryCode: String
     public let surnames: String

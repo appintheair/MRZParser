@@ -8,8 +8,6 @@
 import Foundation
 
 class MRZFieldFormatter {
-    private let ocrCorrection: Bool
-
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd"
@@ -18,92 +16,88 @@ class MRZFieldFormatter {
         return formatter
     }()
 
-    init(ocrCorrection: Bool) {
-        self.ocrCorrection = ocrCorrection
+    func createField(
+        from string: String,
+        at startIndex: Int,
+        length: Int
+    ) -> Field {
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
+        return Field(value: text(from: rawValue), rawValue: rawValue)
     }
 
-    func createField(
-        type: MRZField.FieldType,
+    func createNamesField(
+        from string: String,
+        at startIndex: Int,
+        length: Int
+    ) -> NamesField {
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
+        return names(from: rawValue)
+    }
+
+    func createDateValidatedField(
         from string: String,
         at startIndex: Int,
         length: Int,
-        checkDigitFollows: Bool = false
-    ) -> MRZField {
-        let endIndex = (startIndex + length)
-        var rawValue = string.substring(startIndex, to: (endIndex - 1))
-        var checkDigit = checkDigitFollows ? string.substring(endIndex, to: endIndex) : nil
+        isBirthDate: Bool
+    ) -> DateValidatedField? {
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
+        let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length)
 
-        if ocrCorrection {
-            rawValue = correct(rawValue, fieldType: type)
-            checkDigit = (checkDigit == nil) ? nil : correct(checkDigit!, fieldType: type)
-        }
-
-        return MRZField(value: format(rawValue, as: type), rawValue: rawValue, checkDigit: checkDigit)
+        guard let value = isBirthDate ? birthdate(from: rawValue) : expiryDate(from: rawValue) else { return nil }
+        return DateValidatedField(value: value, rawValue: rawValue, checkDigit: checkDigit)
     }
 
-    func format(_ string: String, as fieldType: MRZField.FieldType) -> Any? {
-        switch fieldType {
-        case .names:
-            return names(from: string)
-        case .birthdate:
-            return birthdate(from: string)
-        case .sex:
-            return sex(from: string)
-        case .expiryDate:
-            return expiryDate(from: string)
-        case .documentType, .documentNumber, .countryCode, .nationality, .personalNumber, .optionalData, .hash:
-            return text(from: string)
-        }
+    func createStringValidatedField(
+        from string: String,
+        at startIndex: Int,
+        length: Int,
+        checkDigitFollows: Bool = true
+    ) -> StringValidatedField {
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
+        let checkDigit = checkDigitFollows ? getCheckDigit(from: string, endIndex: startIndex + length) : ""
+
+        return StringValidatedField(value: text(from: rawValue), rawValue: rawValue, checkDigit: checkDigit)
     }
 
-    func correct(_ string: String, fieldType: MRZField.FieldType) -> String {
-        switch fieldType {
-        case .birthdate, .expiryDate, .hash:
-            // TODO: Check correction of dates (month & day)
-            return replaceLetters(in: string)
-        case .names, .documentType, .countryCode, .nationality:
-            // TODO: Check documentType, countryCode and nationality against possible (allowed) values
-            return replaceDigits(in: string)
-        case .sex:
-            // TODO: Improve correction (take into account "M" & "<" too)
-            return string.replace("P", with: "F")
-        default:
-            return string
-        }
+    private func getRawValue(
+        from string: String,
+        startIndex: Int,
+        length: Int
+    ) -> String {
+        let endIndex = startIndex + length
+        return string.substring(startIndex, to: (endIndex - 1))
     }
 
-    // MARK: Value Formatters
-    private func names(from string: String) -> (primary: String, secondary: String) {
-        let identifiers = string.trimmingFillers.components(separatedBy: "<<").map({ $0.replace("<", with: " ") })
-        let secondaryID = identifiers.indices.contains(1) ? identifiers[1] : ""
-        return (primary: identifiers[0], secondary: secondaryID)
+    private func getCheckDigit(
+        from string: String,
+        endIndex: Int
+    ) -> String {
+        string.substring(endIndex, to: endIndex)
     }
 
-    private func sex(from string: String) -> String? {
-        switch string {
-        case "M": return "MALE"
-        case "F": return "FEMALE"
-        case "<": return "UNSPECIFIED"
-        default: return nil
+    private func names(from string: String) -> NamesField {
+        let identifiers = string.trimmingFillers.components(separatedBy: "<<").map { $0.replace("<", with: " ") }
+        var secondaryID: String?
+
+        if identifiers.indices.contains(1) {
+            secondaryID = identifiers[1]
         }
+
+        return (surnames: identifiers.first ?? "", givenNames: secondaryID ?? "")
     }
 
     private func birthdate(from string: String) -> Date? {
-        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) else { return nil }
-
+        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)),
+              let parsedYear = Int(string.substring(0, to: 1)) else { return nil }
         let currentYear = Calendar.current.component(.year, from: Date()) - 2000
-        let parsedYear = Int(string.substring(0, to: 1))!
         let centennial = (parsedYear > currentYear) ? "19" : "20"
-
         return dateFormatter.date(from: centennial + string)
     }
 
     private func expiryDate(from string: String) -> Date? {
-        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) else { return nil }
-
-        let parsedYear = Int(string.substring(0, to: 1))!
+        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)),
+              let parsedYear = Int(string.substring(0, to: 1)) else { return nil }
         let centennial = (parsedYear >= 70) ? "19" : "20"
-
         return dateFormatter.date(from: centennial + string)
     }
 
@@ -111,23 +105,30 @@ class MRZFieldFormatter {
         string.trimmingFillers.replace("<", with: " ")
     }
 
-    // MARK: Utils
-    private func replaceDigits(in string: String) -> String {
-        return string
-            .replace("0", with: "O")
-            .replace("1", with: "I")
-            .replace("2", with: "Z")
-            .replace("8", with: "B")
-    }
+    static func isValueValid(_ rawValue: String, checkDigit: String) -> Bool {
+        guard let numericCheckDigit = Int(checkDigit) else {
+            return checkDigit == "<" ? rawValue.trimmingFillers.isEmpty : false
+        }
 
-    private func replaceLetters(in string: String) -> String {
-        return string
-            .replace("O", with: "0")
-            .replace("Q", with: "0")
-            .replace("U", with: "0")
-            .replace("D", with: "0")
-            .replace("I", with: "1")
-            .replace("Z", with: "2")
-            .replace("B", with: "8")
+        var total = 0
+
+        for (index, character) in rawValue.enumerated() {
+            guard let unicodeScalar = character.unicodeScalars.first else { return false }
+            let charValue: Int
+
+            if CharacterSet.uppercaseLetters.contains(unicodeScalar) {
+                charValue = Int(10 + unicodeScalar.value) - 65
+            } else if CharacterSet.decimalDigits.contains(unicodeScalar), let digit = Int(String(character)) {
+                charValue = digit
+            } else if character == "<" {
+                charValue = 0
+            } else {
+                return false
+            }
+
+            total += charValue * [7, 3, 1][index % 3]
+        }
+
+        return total % 10 == numericCheckDigit
     }
 }

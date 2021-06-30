@@ -25,22 +25,18 @@
                             ERIKSSON<<ANNA<MARIA<<<<<<<<<<
                             """
             let result = MRZResult(
-                documentType: "I",
+                format: .td1,
+                documentType: .id,
                 countryCode: "UTO",
                 surnames: "ERIKSSON",
                 givenNames: "ANNA MARIA",
                 documentNumber: "D23145890",
                 nationalityCountryCode: "UTO",
-                birthdate:  dateFormatter.date(from: "740812"),
-                sex: "FEMALE",
-                expiryDate: dateFormatter.date(from: "120415"),
-                personalNumber: "",
-                personalNumber2: "",
-                isDocumentNumberValid: true,
-                isBirthdateValid: true,
-                isExpiryDateValid: true,
-                isPersonalNumberValid: nil,
-                allCheckDigitsValid: true
+                birthdate:  dateFormatter.date(from: "740812")!,
+                sex: .female,
+                expiryDate: dateFormatter.date(from: "120415")!,
+                optionalData: "",
+                optionalData2: ""
             )
 
             XCTAssertEqual(parser.parse(mrzString: mrzString), result)
@@ -52,22 +48,18 @@
                             D231458907UTO7408122F1204159<<<<<<<6
                             """
             let result = MRZResult(
-                documentType: "I",
+                format: .td2,
+                documentType: .id,
                 countryCode: "UTO",
                 surnames: "ERIKSSON",
                 givenNames: "ANNA MARIA",
                 documentNumber: "D23145890",
                 nationalityCountryCode: "UTO",
-                birthdate:  dateFormatter.date(from: "740812"),
-                sex: "FEMALE",
-                expiryDate: dateFormatter.date(from: "120415"),
-                personalNumber: "",
-                personalNumber2: nil,
-                isDocumentNumberValid: true,
-                isBirthdateValid: true,
-                isExpiryDateValid: true,
-                isPersonalNumberValid: nil,
-                allCheckDigitsValid: true
+                birthdate:  dateFormatter.date(from: "740812")!,
+                sex: .female,
+                expiryDate: dateFormatter.date(from: "120415")!,
+                optionalData: "",
+                optionalData2: nil
             )
 
             XCTAssertEqual(parser.parse(mrzString: mrzString), result)
@@ -79,22 +71,18 @@
                             L898902C36UTO7408122F1204159ZE184226B<<<<<10
                             """
             let result = MRZResult(
-                documentType: "P",
+                format: .td3,
+                documentType: .passport,
                 countryCode: "UTO",
                 surnames: "ERIKSSON",
                 givenNames: "ANNA MARIA",
                 documentNumber: "L898902C3",
                 nationalityCountryCode: "UTO",
-                birthdate:  dateFormatter.date(from: "740812"),
-                sex: "FEMALE",
-                expiryDate: dateFormatter.date(from: "120415"),
-                personalNumber: "ZE184226B",
-                personalNumber2: nil,
-                isDocumentNumberValid: true,
-                isBirthdateValid: true,
-                isExpiryDateValid: true,
-                isPersonalNumberValid: true,
-                allCheckDigitsValid: true
+                birthdate:  dateFormatter.date(from: "740812")!,
+                sex: .female,
+                expiryDate: dateFormatter.date(from: "120415")!,
+                optionalData: "ZE184226B",
+                optionalData2: nil
             )
 
             XCTAssertEqual(parser.parse(mrzString: mrzString), result)
@@ -106,22 +94,18 @@
                             L8988901C4XXX4009078F96121096ZE184226B<<<<<<
                             """
             let result = MRZResult(
-                documentType: "V",
+                format: .mrva,
+                documentType: .visa,
                 countryCode: "UTO",
                 surnames: "ERIKSSON",
                 givenNames: "ANNA MARIA",
                 documentNumber: "L8988901C",
                 nationalityCountryCode: "XXX",
-                birthdate:  dateFormatter.date(from: "19400907"),
-                sex: "FEMALE",
-                expiryDate: dateFormatter.date(from: "19961210"),
-                personalNumber: "6ZE184226B",
-                personalNumber2: nil,
-                isDocumentNumberValid: true,
-                isBirthdateValid: true,
-                isExpiryDateValid: true,
-                isPersonalNumberValid: nil,
-                allCheckDigitsValid: true
+                birthdate:  dateFormatter.date(from: "19400907")!,
+                sex: .female,
+                expiryDate: dateFormatter.date(from: "19961210")!,
+                optionalData: "6ZE184226B",
+                optionalData2: nil
             )
 
             XCTAssertEqual(parser.parse(mrzString: mrzString), result)
@@ -134,22 +118,18 @@
                             L8988901C4XXX4009078F9612109<<<<<<<<
                             """
             let result = MRZResult(
-                documentType: "V",
+                format: .mrvb,
+                documentType: .visa,
                 countryCode: "UTO",
                 surnames: "ERIKSSON",
                 givenNames: "ANNA MARIA",
                 documentNumber: "L8988901C",
                 nationalityCountryCode: "XXX",
-                birthdate:  dateFormatter.date(from: "19400907"),
-                sex: "FEMALE",
-                expiryDate: dateFormatter.date(from: "19961210"),
-                personalNumber: "",
-                personalNumber2: nil,
-                isDocumentNumberValid: true,
-                isBirthdateValid: true,
-                isExpiryDateValid: true,
-                isPersonalNumberValid: nil,
-                allCheckDigitsValid: true
+                birthdate:  dateFormatter.date(from: "19400907")!,
+                sex: .female,
+                expiryDate: dateFormatter.date(from: "19961210")!,
+                optionalData: "",
+                optionalData2: nil
             )
 
             XCTAssertEqual(parser.parse(mrzString: mrzString), result)

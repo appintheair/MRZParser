@@ -28,9 +28,12 @@ public class TD3 {
 
         return MRZResult(
             format: format,
-            documentType: MRZResult.DocumentType.allCases.first(
-                where: { $0.identifier.contains(documentTypeField.value) }
-            ) ?? .undefined,
+            documentType: {
+                guard let documentTypeFirstElement = documentTypeField.value.first else { return .undefined }
+                return MRZResult.DocumentType.allCases.first(where: {
+                    $0.identifier == String(documentTypeFirstElement)
+                }) ?? .undefined
+            }(),
             countryCode: countryCodeField.value,
             surnames: namesField.surnames,
             givenNames: namesField.givenNames,
@@ -73,7 +76,7 @@ public class TD3 {
         let (firstLine, secondLine) = (mrzLines[0], mrzLines[1])
 
         /// MRV-A type
-        let isVisaDocument = (firstLine.substring(0, to: 0) == "V")
+        let isVisaDocument = (firstLine.substring(0, to: 0) == String(MRZResult.DocumentType.visa.identifier))
         format = isVisaDocument ? .mrva : .td3
         
         documentTypeField = formatter.createField(from: firstLine, at: 0, length: 2, fieldType: .documentType)

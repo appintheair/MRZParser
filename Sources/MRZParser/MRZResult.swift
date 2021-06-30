@@ -18,16 +18,16 @@ public struct MRZResult: Equatable {
         case id
         case undefined
 
-        var identifier: [String] {
+        var identifier: String {
             switch self {
             case .visa:
-                return ["V"]
+                return "V"
             case .passport:
-                return ["P", "PN"]
+                return "P"
             case .id:
-                return ["I", "ID"]
+                return "I"
             case .undefined:
-                return []
+                return ""
             }
         }
     }
@@ -44,7 +44,7 @@ public struct MRZResult: Equatable {
             case .female:
                 return ["F"]
             case .unspecified:
-                return ["X", "<", ""]
+                return ["X", "<", " "]
             }
         }
     }

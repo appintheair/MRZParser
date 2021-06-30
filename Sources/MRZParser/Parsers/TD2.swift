@@ -26,9 +26,12 @@ public class TD2 {
     lazy var result: MRZResult? = {
         return MRZResult(
             format: format,
-            documentType: MRZResult.DocumentType.allCases.first(
-                where: { $0.identifier.contains(documentTypeField.value) }
-            ) ?? .undefined,
+            documentType: {
+                guard let documentTypeFirstElement = documentTypeField.value.first else { return .undefined }
+                return MRZResult.DocumentType.allCases.first(where: {
+                    $0.identifier == String(documentTypeFirstElement)
+                }) ?? .undefined
+            }(),
             countryCode: countryCodeField.value,
             surnames: namesField.surnames,
             givenNames: namesField.givenNames,

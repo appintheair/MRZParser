@@ -14,6 +14,8 @@ enum MRZFormat {
 public struct MRZParser {
     private let formatter = MRZFieldFormatter()
 
+    public init() {}
+
     // MARK: Parsing
     public func parse(mrzLines: [String]) -> MRZResult? {
         guard let uniformedLineLength = uniformedLineLength(for: mrzLines),

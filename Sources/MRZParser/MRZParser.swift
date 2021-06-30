@@ -12,9 +12,11 @@ enum MRZFormat {
 }
 
 public struct MRZParser {
-    private let formatter = MRZFieldFormatter()
+    private let formatter: MRZFieldFormatter
 
-    public init() {}
+    public init(isOCRCorrectionEnabled: Bool = false) {
+        formatter = MRZFieldFormatter(isOCRCorrectionEnabled: isOCRCorrectionEnabled)
+    }
 
     // MARK: Parsing
     public func parse(mrzLines: [String]) -> MRZResult? {

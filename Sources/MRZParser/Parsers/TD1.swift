@@ -63,26 +63,30 @@ public class TD1 {
         let (firstLine, secondLine, thirdLine) = (mrzLines[0], mrzLines[1], mrzLines[2])
         format = .td1
 
-        documentTypeField = formatter.createField(from: firstLine, at: 0, length: 2)
-        countryCodeField = formatter.createField(from: firstLine, at: 2, length: 3)
-        documentNumberField = formatter.createStringValidatedField(from: firstLine, at: 5, length: 9)
+        documentTypeField = formatter.createField(from: firstLine, at: 0, length: 2, fieldType: .documentType)
+        countryCodeField = formatter.createField(from: firstLine, at: 2, length: 3, fieldType: .countryCode)
+        documentNumberField = formatter.createStringValidatedField(
+            from: firstLine, at: 5, length: 9, fieldType: .documentNumber
+        )
         optionalDataField = formatter.createStringValidatedField(
             from: firstLine,
             at: 15,
             length: 15,
+            fieldType: .optionalData,
             checkDigitFollows: false
         )
-        birthdateField = formatter.createDateValidatedField(from: secondLine, at: 0, length: 6, isBirthDate: true)
-        sexField = formatter.createField(from: secondLine, at: 7, length: 1)
-        expiryDateField = formatter.createDateValidatedField(from: secondLine, at: 8, length: 6, isBirthDate: false)
-        nationalityField = formatter.createField(from: secondLine, at: 15, length: 3)
+        birthdateField = formatter.createDateValidatedField(from: secondLine, at: 0, length: 6, fieldType: .birthdate)
+        sexField = formatter.createField(from: secondLine, at: 7, length: 1, fieldType: .sex)
+        expiryDateField = formatter.createDateValidatedField(from: secondLine, at: 8, length: 6, fieldType: .expiryDate)
+        nationalityField = formatter.createField(from: secondLine, at: 15, length: 3, fieldType: .nationality)
         optionalData2Field = formatter.createStringValidatedField(
             from: secondLine,
             at: 18,
             length: 11,
+            fieldType: .optionalData,
             checkDigitFollows: false
         )
-        finalCheckDigit = formatter.createField(from: secondLine, at: 29, length: 1).rawValue
+        finalCheckDigit = formatter.createField(from: secondLine, at: 29, length: 1, fieldType: .hash).rawValue
         namesField = formatter.createNamesField(from: thirdLine, at: 0, length: 29)
     }
 }

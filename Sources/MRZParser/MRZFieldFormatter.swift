@@ -8,6 +8,8 @@
 import Foundation
 
 class MRZFieldFormatter {
+    private let isOCRCorrectionEnabled: Bool
+    private let ocrCorrector = OCRCorrector()
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd"
@@ -16,12 +18,17 @@ class MRZFieldFormatter {
         return formatter
     }()
 
+    init(isOCRCorrectionEnabled: Bool) {
+        self.isOCRCorrectionEnabled = isOCRCorrectionEnabled
+    }
+
     func createField(
         from string: String,
         at startIndex: Int,
-        length: Int
+        length: Int,
+        fieldType: MRZFieldType
     ) -> Field {
-        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length, fieldType: fieldType)
         return Field(value: text(from: rawValue), rawValue: rawValue)
     }
 
@@ -30,7 +37,7 @@ class MRZFieldFormatter {
         at startIndex: Int,
         length: Int
     ) -> NamesField {
-        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length, fieldType: .names)
         return names(from: rawValue)
     }
 
@@ -38,12 +45,21 @@ class MRZFieldFormatter {
         from string: String,
         at startIndex: Int,
         length: Int,
-        isBirthDate: Bool
+        fieldType: MRZFieldType
     ) -> ValidatedField<Date?> {
-        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
-        let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length)
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length, fieldType: fieldType)
+        let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length, fieldType: fieldType)
 
-        let value = isBirthDate ? birthdate(from: rawValue) : expiryDate(from: rawValue)
+        let value: Date?
+        switch fieldType {
+        case .birthdate:
+            value = birthdate(from: rawValue)
+        case .expiryDate:
+            value = expiryDate(from: rawValue)
+        default:
+            value = nil
+        }
+
         return ValidatedField(value: value, rawValue: rawValue, checkDigit: checkDigit)
     }
 
@@ -51,10 +67,20 @@ class MRZFieldFormatter {
         from string: String,
         at startIndex: Int,
         length: Int,
+        fieldType: MRZFieldType,
         checkDigitFollows: Bool = true
     ) -> ValidatedField<String> {
-        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
-        let checkDigit = checkDigitFollows ? getCheckDigit(from: string, endIndex: startIndex + length) : ""
+        let rawValue = getRawValue(
+            from: string,
+            startIndex: startIndex,
+            length: length,
+            fieldType: fieldType
+        )
+        let checkDigit = checkDigitFollows ? getCheckDigit(
+            from: string,
+            endIndex: startIndex + length,
+            fieldType: fieldType
+        ) : ""
 
         return ValidatedField(value: text(from: rawValue), rawValue: rawValue, checkDigit: checkDigit)
     }
@@ -62,17 +88,31 @@ class MRZFieldFormatter {
     private func getRawValue(
         from string: String,
         startIndex: Int,
-        length: Int
+        length: Int,
+        fieldType: MRZFieldType
     ) -> String {
         let endIndex = startIndex + length
-        return string.substring(startIndex, to: (endIndex - 1))
+        var value = string.substring(startIndex, to: (endIndex - 1))
+
+        if isOCRCorrectionEnabled {
+            value = ocrCorrector.correct(value, fieldType: fieldType)
+        }
+
+        return value
     }
 
     private func getCheckDigit(
         from string: String,
-        endIndex: Int
+        endIndex: Int,
+        fieldType: MRZFieldType
     ) -> String {
-        string.substring(endIndex, to: endIndex)
+        var value = string.substring(endIndex, to: endIndex)
+
+        if isOCRCorrectionEnabled {
+            value = ocrCorrector.correct(value, fieldType: fieldType)
+        }
+
+        return value
     }
 
     private func names(from string: String) -> NamesField {

@@ -69,23 +69,27 @@ public class TD2 {
         let isVisaDocument = (firstLine.substring(0, to: 0) == "V")
         format = isVisaDocument ? .mrvb : .td2
 
-        documentTypeField = formatter.createField(from: firstLine, at: 0, length: 2)
-        countryCodeField = formatter.createField(from: firstLine, at: 2, length: 3)
+        documentTypeField = formatter.createField(from: firstLine, at: 0, length: 2, fieldType: .documentType)
+        countryCodeField = formatter.createField(from: firstLine, at: 2, length: 3, fieldType: .countryCode)
         namesField = formatter.createNamesField(from: firstLine, at: 5, length: 31)
 
-        documentNumberField = formatter.createStringValidatedField(from: secondLine, at: 0, length: 9)
-        nationalityField = formatter.createField(from: secondLine, at: 10, length: 3)
-        birthdateField = formatter.createDateValidatedField(from: secondLine, at: 13, length: 6, isBirthDate: true)
-        sexField = formatter.createField(from: secondLine, at: 20, length: 1)
-        expiryDateField = formatter.createDateValidatedField(from: secondLine, at: 21, length: 6, isBirthDate: false)
+        documentNumberField = formatter.createStringValidatedField(
+            from: secondLine, at: 0, length: 9, fieldType: .documentNumber
+        )
+        nationalityField = formatter.createField(from: secondLine, at: 10, length: 3, fieldType: .nationality)
+        birthdateField = formatter.createDateValidatedField(from: secondLine, at: 13, length: 6, fieldType: .birthdate)
+        sexField = formatter.createField(from: secondLine, at: 20, length: 1, fieldType: .sex)
+        expiryDateField = formatter.createDateValidatedField(
+            from: secondLine, at: 21, length: 6, fieldType: .expiryDate
+        )
         optionalDataField = formatter.createStringValidatedField(
-            from: secondLine,
-            at: 28,
+            from: secondLine, at: 28,
             length: isVisaDocument ? 8 : 7,
+            fieldType: .optionalData,
             checkDigitFollows: false
         )
         finalCheckDigit = isVisaDocument ? nil : formatter.createField(
-            from: secondLine, at: 35, length: 1
+            from: secondLine, at: 35, length: 1, fieldType: .hash
         ).rawValue
     }
 }

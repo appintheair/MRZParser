@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum MRZFieldType {
+    case documentType, countryCode, names, documentNumber, nationality, birthdate, sex, expiryDate, personalNumber, optionalData, hash
+}
+
 // MARK: - BasicFields
 typealias NamesField = (surnames: String, givenNames: String)
 
@@ -15,7 +19,7 @@ struct Field {
     let rawValue: String
 }
 
-// MARK: - ValidatedField
+// MARK: ValidatedField
 protocol ValidatedFieldProtocol {
     var rawValue: String { get }
     var checkDigit: String { get }

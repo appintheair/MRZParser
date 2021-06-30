@@ -76,27 +76,37 @@ public class TD3 {
         let isVisaDocument = (firstLine.substring(0, to: 0) == "V")
         format = isVisaDocument ? .mrva : .td3
         
-        documentTypeField = formatter.createField(from: firstLine, at: 0, length: 2)
-        countryCodeField = formatter.createField(from: firstLine, at: 2, length: 3)
+        documentTypeField = formatter.createField(from: firstLine, at: 0, length: 2, fieldType: .documentType)
+        countryCodeField = formatter.createField(from: firstLine, at: 2, length: 3, fieldType: .countryCode)
         namesField = formatter.createNamesField(from: firstLine, at: 5, length: 39)
         
-        documentNumberField = formatter.createStringValidatedField(from: secondLine, at: 0, length: 9)
-        nationalityField = formatter.createField(from: secondLine, at: 10, length: 3)
-        birthdateField = formatter.createDateValidatedField(from: secondLine, at: 13, length: 6, isBirthDate: true)
-        sexField = formatter.createField(from: secondLine, at: 20, length: 1)
-        expiryDateField = formatter.createDateValidatedField(from: secondLine, at: 21, length: 6, isBirthDate: false)
+        documentNumberField = formatter.createStringValidatedField(
+            from: secondLine,
+            at: 0,
+            length: 9,
+            fieldType: .documentNumber
+        )
+        nationalityField = formatter.createField(from: secondLine, at: 10, length: 3, fieldType: .nationality)
+        birthdateField = formatter.createDateValidatedField(from: secondLine, at: 13, length: 6, fieldType: .birthdate)
+        sexField = formatter.createField(from: secondLine, at: 20, length: 1, fieldType: .sex)
+        expiryDateField = formatter.createDateValidatedField(
+            from: secondLine, at: 21, length: 6, fieldType: .expiryDate
+        )
         
         if isVisaDocument {
             optionalDataField = formatter.createStringValidatedField(
                 from: secondLine,
                 at: 28,
                 length: 16,
+                fieldType: .optionalData,
                 checkDigitFollows: false
             )
             finalCheckDigit = nil
         } else {
-            optionalDataField = formatter.createStringValidatedField(from: secondLine, at: 28, length: 14)
-            finalCheckDigit = formatter.createField(from: secondLine, at: 43, length: 1).rawValue
+            optionalDataField = formatter.createStringValidatedField(
+                from: secondLine, at: 28, length: 14, fieldType: .optionalData
+            )
+            finalCheckDigit = formatter.createField(from: secondLine, at: 43, length: 1, fieldType: .hash).rawValue
         }
     }
 }

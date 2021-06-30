@@ -23,11 +23,8 @@ public class TD2 {
     private let optionalDataField: ValidatedField<String>
     private let finalCheckDigit: String?
 
-
     lazy var result: MRZResult? = {
-        guard fieldsIsValid, let birthdateField = birthdateField, let expiryDateField = expiryDateField else {
-            return nil
-        }
+        guard fieldsIsValid, let birthdateField = birthdateField else { return nil }
 
         return MRZResult(
             format: format,
@@ -41,7 +38,7 @@ public class TD2 {
             nationalityCountryCode: nationalityField.value,
             birthdate: birthdateField.value,
             sex: MRZResult.Sex.allCases.first(where: { $0.identifier.contains(sexField.value) }) ?? .unspecified,
-            expiryDate: expiryDateField.value,
+            expiryDate: expiryDateField?.value,
             optionalData: optionalDataField.value,
             optionalData2: nil
         )

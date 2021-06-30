@@ -39,11 +39,11 @@ class MRZFieldFormatter {
         at startIndex: Int,
         length: Int,
         isBirthDate: Bool
-    ) -> ValidatedField<Date>? {
+    ) -> ValidatedField<Date> {
         let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
         let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length)
 
-        guard let value = isBirthDate ? birthdate(from: rawValue) : expiryDate(from: rawValue) else { return nil }
+        let value = isBirthDate ? birthdate(from: rawValue) : expiryDate(from: rawValue)
         return ValidatedField(value: value, rawValue: rawValue, checkDigit: checkDigit)
     }
 

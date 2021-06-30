@@ -29,7 +29,7 @@ extension ValidatedFieldProtocol {
 }
 
 struct ValidatedField<T>: ValidatedFieldProtocol {
-    let value: T
+    let value: T?
     let rawValue: String
     let checkDigit: String
 }

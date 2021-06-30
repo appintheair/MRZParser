@@ -54,12 +54,12 @@ public struct MRZResult: Equatable {
     public let countryCode: String
     public let surnames: String
     public let givenNames: String
-    public let documentNumber: String
+    public let documentNumber: String?
     public let nationalityCountryCode: String
-    public let birthdate: Date
+    public let birthdate: Date?
     public let sex: Sex
-    public let expiryDate: Date
-    public let optionalData: String
+    public let expiryDate: Date?
+    public let optionalData: String?
     /// `nil` if not provided
     public let optionalData2: String?
 }

@@ -24,9 +24,7 @@ public class TD3 {
     private let finalCheckDigit: String?
     
     lazy var result: MRZResult? = {
-        guard fieldsIsValid, let birthdateField = birthdateField, let expiryDateField = expiryDateField else {
-            return nil
-        }
+        guard fieldsIsValid, let birthdateField = birthdateField else { return nil }
 
         return MRZResult(
             format: format,
@@ -40,34 +38,38 @@ public class TD3 {
             nationalityCountryCode: nationalityField.value,
             birthdate: birthdateField.value,
             sex: MRZResult.Sex.allCases.first(where: { $0.identifier.contains(sexField.value) }) ?? .unspecified,
-            expiryDate: expiryDateField.value,
+            expiryDate: expiryDateField?.value,
             optionalData: optionalDataField.value,
             optionalData2: nil
         )
     }()
 
     private var fieldsIsValid: Bool {
-        guard let birthdateField = birthdateField, let expiryDateField = expiryDateField else { return false }
+        guard let birthdateField = birthdateField else { return false }
         if let checkDigit = finalCheckDigit {
-            let fieldsToValidate: [ValidatedFieldProtocol] = [
+            var fieldsToValidate: [ValidatedFieldProtocol] = [
                 documentNumberField,
-                birthdateField,
-                expiryDateField,
-                optionalDataField
+                birthdateField
             ]
+
+            if let expiryDateField = expiryDateField {
+                fieldsToValidate.append(expiryDateField)
+            }
+
+            fieldsToValidate.append(optionalDataField)
             let compositedValue = fieldsToValidate.reduce("", {
                 ($0 + $1.rawValue + $1.checkDigit)
             })
             let isCompositedValueValid = MRZFieldFormatter.isValueValid(compositedValue, checkDigit: checkDigit)
             return documentNumberField.isValid &&
                     birthdateField.isValid &&
-                    expiryDateField.isValid &&
+                    expiryDateField?.isValid ?? true &&
                     optionalDataField.isValid &&
                     isCompositedValueValid
         } else {
             return documentNumberField.isValid &&
                     birthdateField.isValid &&
-                    expiryDateField.isValid
+                    expiryDateField?.isValid ?? true
         }
     }
     

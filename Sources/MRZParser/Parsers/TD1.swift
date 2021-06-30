@@ -25,7 +25,7 @@ public class TD1 {
     private let finalCheckDigit: String
     
     lazy var result: MRZResult? = {
-        guard fieldsIsValid, let birthdateField = birthdateField, let expiryDateField = expiryDateField else {
+        guard fieldsIsValid, let birthdateField = birthdateField else {
             return nil
         }
 
@@ -41,7 +41,7 @@ public class TD1 {
             nationalityCountryCode: nationalityField.value,
             birthdate: birthdateField.value,
             sex: MRZResult.Sex.allCases.first(where: { $0.identifier.contains(sexField.value) }) ?? .unspecified,
-            expiryDate: expiryDateField.value,
+            expiryDate: expiryDateField?.value,
             optionalData: optionalDataField.value,
             optionalData2: optionalData2Field.value
         )

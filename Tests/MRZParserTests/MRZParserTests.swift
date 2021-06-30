@@ -88,6 +88,52 @@
             XCTAssertEqual(parser.parse(mrzString: mrzString), result)
         }
 
+        func testTD3RussianInternationalPassport() {
+            let mrzString = """
+                            P<RUSIMIAREK<<EVGENII<<<<<<<<<<<<<<<<<<<<<<<
+                            1104000008RUS8209120M2601157<<<<<<<<<<<<<<06
+                            """
+            let result = MRZResult(
+                format: .td3,
+                documentType: .passport,
+                countryCode: "RUS",
+                surnames: "IMIAREK",
+                givenNames: "EVGENII",
+                documentNumber: "110400000",
+                nationalityCountryCode: "RUS",
+                birthdate:  dateFormatter.date(from: "820912")!,
+                sex: .male,
+                expiryDate: dateFormatter.date(from: "260115")!,
+                optionalData: "",
+                optionalData2: nil
+            )
+
+            XCTAssertEqual(parser.parse(mrzString: mrzString), result)
+        }
+
+        func testTD3RussianPassport() {
+            let mrzString = """
+                            PNRUSZDRIL7K<<SERGEQ<ANATOL9EVI3<<<<<<<<<<<<
+                            3919353498RUS7207233M<<<<<<<4151218910003<50
+                            """
+            let result = MRZResult(
+                format: .td3,
+                documentType: .passport,
+                countryCode: "RUS",
+                surnames: "ZDRIL7K",
+                givenNames: "SERGEQ ANATOL9EVI3",
+                documentNumber: "391935349",
+                nationalityCountryCode: "RUS",
+                birthdate:  dateFormatter.date(from: "720723")!,
+                sex: .male,
+                expiryDate: nil,
+                optionalData: "4151218910003",
+                optionalData2: nil
+            )
+
+            XCTAssertEqual(parser.parse(mrzString: mrzString), result)
+        }
+
         func testMRVA() {
             let mrzString = """
                             V<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<

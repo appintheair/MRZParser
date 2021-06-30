@@ -17,9 +17,9 @@ public class TD2 {
     private let namesField: NamesField
     private let documentNumberField: ValidatedField<String>
     private let nationalityField: Field
-    private let birthdateField: ValidatedField<Date>
+    private let birthdateField: ValidatedField<Date?>
     private let sexField: Field
-    private let expiryDateField: ValidatedField<Date>
+    private let expiryDateField: ValidatedField<Date?>
     private let optionalDataField: ValidatedField<String>
     private let finalCheckDigit: String?
 

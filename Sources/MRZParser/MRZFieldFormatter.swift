@@ -39,7 +39,7 @@ class MRZFieldFormatter {
         at startIndex: Int,
         length: Int,
         isBirthDate: Bool
-    ) -> ValidatedField<Date> {
+    ) -> ValidatedField<Date?> {
         let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
         let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length)
 

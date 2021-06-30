@@ -15,9 +15,9 @@ public class TD1 {
     private let documentTypeField: Field
     private let countryCodeField: Field
     private let documentNumberField: ValidatedField<String>
-    private let birthdateField: ValidatedField<Date>?
+    private let birthdateField: ValidatedField<Date>
     private let sexField: Field
-    private let expiryDateField: ValidatedField<Date>?
+    private let expiryDateField: ValidatedField<Date>
     private let nationalityField: Field
     private let optionalDataField: ValidatedField<String>
     private let optionalData2Field: ValidatedField<String>
@@ -25,9 +25,7 @@ public class TD1 {
     private let finalCheckDigit: String
     
     lazy var result: MRZResult? = {
-        guard fieldsIsValid, let birthdateField = birthdateField else {
-            return nil
-        }
+        guard fieldsIsValid else { return nil }
 
         return MRZResult(
             format: format,
@@ -41,14 +39,13 @@ public class TD1 {
             nationalityCountryCode: nationalityField.value,
             birthdate: birthdateField.value,
             sex: MRZResult.Sex.allCases.first(where: { $0.identifier.contains(sexField.value) }) ?? .unspecified,
-            expiryDate: expiryDateField?.value,
+            expiryDate: expiryDateField.value,
             optionalData: optionalDataField.value,
             optionalData2: optionalData2Field.value
         )
     }()
 
     private var fieldsIsValid: Bool {
-        guard let birthdateField = birthdateField, let expiryDateField = expiryDateField else { return false }
         let filedsToValidate: [ValidatedFieldProtocol] = [
             documentNumberField,
             birthdateField,

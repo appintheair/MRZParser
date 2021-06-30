@@ -23,7 +23,7 @@ public struct MRZResult: Equatable {
             case .visa:
                 return ["V"]
             case .passport:
-                return ["P"]
+                return ["P", "PN"]
             case .id:
                 return ["I", "ID"]
             case .undefined:

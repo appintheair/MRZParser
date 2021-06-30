@@ -17,14 +17,14 @@ public class TD3 {
     private let namesField: NamesField
     private let documentNumberField: ValidatedField<String>
     private let nationalityField: Field
-    private let birthdateField: ValidatedField<Date>?
+    private let birthdateField: ValidatedField<Date>
     private let sexField: Field
-    private let expiryDateField: ValidatedField<Date>?
+    private let expiryDateField: ValidatedField<Date>
     private let optionalDataField: ValidatedField<String>
     private let finalCheckDigit: String?
     
     lazy var result: MRZResult? = {
-        guard fieldsIsValid, let birthdateField = birthdateField else { return nil }
+        guard fieldsIsValid else { return nil }
 
         return MRZResult(
             format: format,
@@ -38,38 +38,34 @@ public class TD3 {
             nationalityCountryCode: nationalityField.value,
             birthdate: birthdateField.value,
             sex: MRZResult.Sex.allCases.first(where: { $0.identifier.contains(sexField.value) }) ?? .unspecified,
-            expiryDate: expiryDateField?.value,
+            expiryDate: expiryDateField.value,
             optionalData: optionalDataField.value,
             optionalData2: nil
         )
     }()
 
     private var fieldsIsValid: Bool {
-        guard let birthdateField = birthdateField else { return false }
         if let checkDigit = finalCheckDigit {
-            var fieldsToValidate: [ValidatedFieldProtocol] = [
+            let fieldsToValidate: [ValidatedFieldProtocol] = [
                 documentNumberField,
-                birthdateField
+                birthdateField,
+                expiryDateField,
+                optionalDataField
             ]
 
-            if let expiryDateField = expiryDateField {
-                fieldsToValidate.append(expiryDateField)
-            }
-
-            fieldsToValidate.append(optionalDataField)
             let compositedValue = fieldsToValidate.reduce("", {
                 ($0 + $1.rawValue + $1.checkDigit)
             })
             let isCompositedValueValid = MRZFieldFormatter.isValueValid(compositedValue, checkDigit: checkDigit)
             return documentNumberField.isValid &&
                     birthdateField.isValid &&
-                    expiryDateField?.isValid ?? true &&
+                    expiryDateField.isValid &&
                     optionalDataField.isValid &&
                     isCompositedValueValid
         } else {
             return documentNumberField.isValid &&
                     birthdateField.isValid &&
-                    expiryDateField?.isValid ?? true
+                    expiryDateField.isValid
         }
     }
     

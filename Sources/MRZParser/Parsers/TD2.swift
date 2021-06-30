@@ -19,12 +19,12 @@ public class TD2 {
     private let documentTypeField: Field
     private let countryCodeField: Field
     private let namesField: NamesField
-    private let documentNumberField: StringValidatedField
+    private let documentNumberField: ValidatedField<String>
     private let nationalityField: Field
-    private let birthdateField: DateValidatedField?
+    private let birthdateField: ValidatedField<Date>?
     private let sexField: Field
-    private let expiryDateField: DateValidatedField?
-    private let optionalDataField: StringValidatedField
+    private let expiryDateField: ValidatedField<Date>?
+    private let optionalDataField: ValidatedField<String>
     private let finalCheckDigit: String?
 
 
@@ -54,7 +54,7 @@ public class TD2 {
     private var fieldsIsValid: Bool {
         guard let birthdateField = birthdateField, let expiryDateField = expiryDateField else { return false }
         if let checkDigit = finalCheckDigit {
-            let fieldsValidate: [ValidatedField] = [
+            let fieldsValidate: [ValidatedFieldProtocol] = [
                 documentNumberField,
                 birthdateField,
                 expiryDateField,

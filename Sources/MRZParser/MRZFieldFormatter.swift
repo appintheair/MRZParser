@@ -39,12 +39,12 @@ class MRZFieldFormatter {
         at startIndex: Int,
         length: Int,
         isBirthDate: Bool
-    ) -> DateValidatedField? {
+    ) -> ValidatedField<Date>? {
         let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
         let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length)
 
         guard let value = isBirthDate ? birthdate(from: rawValue) : expiryDate(from: rawValue) else { return nil }
-        return DateValidatedField(value: value, rawValue: rawValue, checkDigit: checkDigit)
+        return ValidatedField(value: value, rawValue: rawValue, checkDigit: checkDigit)
     }
 
     func createStringValidatedField(
@@ -52,11 +52,11 @@ class MRZFieldFormatter {
         at startIndex: Int,
         length: Int,
         checkDigitFollows: Bool = true
-    ) -> StringValidatedField {
+    ) -> ValidatedField<String> {
         let rawValue = getRawValue(from: string, startIndex: startIndex, length: length)
         let checkDigit = checkDigitFollows ? getCheckDigit(from: string, endIndex: startIndex + length) : ""
 
-        return StringValidatedField(value: text(from: rawValue), rawValue: rawValue, checkDigit: checkDigit)
+        return ValidatedField(value: text(from: rawValue), rawValue: rawValue, checkDigit: checkDigit)
     }
 
     private func getRawValue(

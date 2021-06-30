@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - BasicFields
 typealias NamesField = (surnames: String, givenNames: String)
 
 struct Field {
@@ -14,26 +15,21 @@ struct Field {
     let rawValue: String
 }
 
-protocol ValidatedField {
+// MARK: - ValidatedField
+protocol ValidatedFieldProtocol {
     var rawValue: String { get }
     var checkDigit: String { get }
     var isValid: Bool { get }
 }
 
-extension ValidatedField {
+extension ValidatedFieldProtocol {
     var isValid: Bool {
         return MRZFieldFormatter.isValueValid(rawValue, checkDigit: checkDigit)
     }
 }
 
-struct StringValidatedField: ValidatedField {
-    let value: String
-    let rawValue: String
-    let checkDigit: String
-}
-
-struct DateValidatedField: ValidatedField {
-    let value: Date
+struct ValidatedField<T>: ValidatedFieldProtocol {
+    let value: T
     let rawValue: String
     let checkDigit: String
 }

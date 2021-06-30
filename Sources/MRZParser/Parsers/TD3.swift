@@ -101,12 +101,7 @@ public class TD3 {
             )
             finalCheckDigit = nil
         } else {
-            optionalDataField = formatter.createStringValidatedField(
-                from: secondLine,
-                at: 28,
-                length: 14,
-                checkDigitFollows: true
-            )
+            optionalDataField = formatter.createStringValidatedField(from: secondLine, at: 28, length: 14)
             finalCheckDigit = formatter.createField(from: secondLine, at: 43, length: 1).rawValue
         }
     }

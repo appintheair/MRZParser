@@ -134,6 +134,29 @@
             XCTAssertEqual(parser.parse(mrzString: mrzString), result)
         }
 
+        func testTD3NetherlandsPassport() {
+            let mrzString = """
+                            P<NLDDE<BRUIJN<<WILLEKE<LISELOTTE<<<<<<<<<<<
+                            SPECI20142NLD6503101F2403096999999990<<<<<84
+                            """
+            let result = MRZResult(
+                format: .td3,
+                documentType: .passport,
+                countryCode: "NLD",
+                surnames: "DE BRUIJN",
+                givenNames: "WILLEKE LISELOTTE",
+                documentNumber: "SPECI2014",
+                nationalityCountryCode: "NLD",
+                birthdate:  dateFormatter.date(from: "650310")!,
+                sex: .female,
+                expiryDate: dateFormatter.date(from: "240309")!,
+                optionalData: "999999990",
+                optionalData2: nil
+            )
+
+            XCTAssertEqual(parser.parse(mrzString: mrzString), result)
+        }
+
         func testMRVA() {
             let mrzString = """
                             V<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<

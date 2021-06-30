@@ -10,10 +10,6 @@ import Foundation
 public class TD3 {
     public static let lineLength = 44
     public static let linesCount = 2
-    static func isLineValid(line: String) -> Bool {
-        // TODO: Line validation
-        return true
-    }
 
     private let format: MRZResult.MRZFormat
     private let documentTypeField: Field

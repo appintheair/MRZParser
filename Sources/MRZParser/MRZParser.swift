@@ -32,17 +32,9 @@ public struct MRZParser {
         return parse(mrzLines: mrzString.components(separatedBy: "\n"))
     }
 
-    // MARK: Line validation
+    // MARK: Line validation by charactes count
     public func isLineValid(line: String) -> Bool {
-        guard let format = mrzFormat(lineLenght: line.count) else { return false }
-        switch format {
-        case .td1:
-            return TD1.isLineValid(line: line)
-        case .td2:
-            return TD2.isLineValid(line: line)
-        case .td3:
-            return TD3.isLineValid(line: line)
-        }
+        mrzFormat(lineLenght: line.count) != nil
     }
 
     // MARK: MRZ-Format detection

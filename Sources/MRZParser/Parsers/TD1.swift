@@ -9,6 +9,7 @@ import Foundation
 
 public class TD1 {
     public static let lineLength = 30
+    public static let linesCount = 3
 
     private let format: MRZResult.MRZFormat
     private let documentTypeField: Field

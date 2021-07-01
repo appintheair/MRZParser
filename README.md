@@ -31,10 +31,6 @@ The parser is able to validate the MRZ string and parse the MRZ code. Let's star
 ```swift
 let parser = MRZParser()
 ```
-For validation we use the method `isLineValid` which returns `Bool`
-```swift
-parser.isLineValid(line: line)
-```
 For parsing, we use the `parse` method which returns the `MRZResult` structure with all the necessary data.
 ```swift
 parser.parse(mrzString: mrzString)

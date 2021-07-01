@@ -35,12 +35,6 @@ public struct MRZParser {
         return parse(mrzLines: mrzString.components(separatedBy: "\n"))
     }
 
-    // MARK: Line validation by charactes count
-    public func isLineValid(line: String) -> Bool {
-        [MRZFormat.td1: TD1.lineLength, MRZFormat.td2: TD2.lineLength, MRZFormat.td3: TD3.lineLength]
-            .first(where: { $0.value == line.count }) != nil
-    }
-
     // MARK: MRZ-Format detection
     private func mrzFormat(from mrzLines: [String]) -> MRZFormat? {
         switch mrzLines.count {

@@ -1,6 +1,6 @@
 [![Swift](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml/badge.svg)](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml)
 # MRZParser
-Parser MRZ code for TD1(ID cards), TD2, TD3 (Passports), MRVA (Visas type A), MRVB (Visas type B) types.
+Parser [MRZ](https://en.wikipedia.org/wiki/Machine-readable_passport) code for TD1(ID cards), TD2, TD3 (Passports), MRVA (Visas type A), MRVB (Visas type B) types.
 
 ## Fields Distribution of Official Travel Documents:
 ![image](https://raw.githubusercontent.com/appintheair/MRZParser/develop/docs/img/Fields_Distribution.png)
@@ -23,7 +23,7 @@ Optional data 2 | Optional personal data at the discretion of the issuing State.
 ### Swift Package Manager
 ```swift
 dependencies: [
-    .package(url: "git@github.com:appintheair/MRZParser.git", .upToNextMajor(from: "0.0.1"))
+    .package(url: "https://github.com/appintheair/MRZParser.git", .upToNextMajor(from: "0.0.1"))
 ]
 ```
 ## Usage

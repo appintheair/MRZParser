@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MRZResult: Equatable {
+public struct MRZResult: Hashable {
     public enum MRZFormat {
         case td1, td2, td3, mrva, mrvb
     }

@@ -133,7 +133,7 @@ Document number | L8988901C
 Birth date | 1940.09.07
 Sex | FEMALE
 Expiry date  | 1996.12.10
-Nationality | UTO
+Nationality | XXX
 Surname | ERIKSSON
 Given names | ANNA MARIA
 Optional data | ""

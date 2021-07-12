@@ -23,5 +23,5 @@ jobs:
       uses:  emibcn/clover-coverage-badges-action@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        coverage-clover-path: .build/debug/codecov/lcov.info
-        protected-branches: '["master",  "develop"]'
+        coverage-summary-path: .build/debug/codecov/lcov.info
+        protected-branches: '["develop"]'

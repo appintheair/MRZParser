@@ -62,5 +62,33 @@ public struct MRZResult: Hashable {
     public let optionalData: String?
     /// `nil` if not provided
     public let optionalData2: String?
+
+    public init(
+        format: MRZFormat,
+        documentType: DocumentType,
+        countryCode: String,
+        surnames: String,
+        givenNames: String,
+        documentNumber: String?,
+        nationalityCountryCode: String,
+        birthdate: Date?,
+        sex: Sex,
+        expiryDate: Date?,
+        optionalData: String?,
+        optionalData2: String?
+    ) {
+        self.format = format
+        self.documentType = documentType
+        self.countryCode = countryCode
+        self.surnames = surnames
+        self.givenNames = givenNames
+        self.documentNumber = documentNumber
+        self.nationalityCountryCode = nationalityCountryCode
+        self.birthdate = birthdate
+        self.sex = sex
+        self.expiryDate = expiryDate
+        self.optionalData = optionalData
+        self.optionalData2 = optionalData2
+    }
 }
 

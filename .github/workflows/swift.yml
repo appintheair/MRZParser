@@ -19,3 +19,8 @@ jobs:
       run: swift test -v --enable-code-coverage
     - name: Swift Coverage Report
       uses: maxep/spm-lcov-action@0.3.1
+    - name: Test angular action
+      uses:  emibcn/clover-coverage-badges-action@v1
+      with:
+        coverage-clover-path: .build/debug/codecov/lcov.info
+        protected-branches: '["master",  "develop"]'

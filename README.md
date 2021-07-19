@@ -1,5 +1,5 @@
 [![codecov](https://codecov.io/gh/appintheair/MRZParser/branch/develop/graph/badge.svg?token=XS5F9MtSfq)](https://codecov.io/gh/appintheair/MRZParser)
-[![build](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml/badge.svg)](https://github.com/appintheair/MRZParser/actions/workflows/Build and test.yml)
+[![build](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml/badge.svg)](https://github.com/appintheair/MRZParser/actions/workflows/Build%20and%20test.yml)
 [![spm](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://github.com/appintheair/MRZParser/blob/develop/Package.swift)
 
 # MRZParser

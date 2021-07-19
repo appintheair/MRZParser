@@ -1,5 +1,6 @@
-[![Swift](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml/badge.svg)](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml)
-[![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://github.com/appintheair/MRZParser/blob/develop/Package.swift)
+[![codecov](https://codecov.io/gh/appintheair/MRZParser/branch/develop/graph/badge.svg?token=XS5F9MtSfq)](https://codecov.io/gh/appintheair/MRZParser)
+[![build](https://github.com/appintheair/MRZParser/actions/workflows/swift.yml/badge.svg)](https://github.com/appintheair/MRZParser/actions/workflows/Build%20and%20test.yml)
+[![spm](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://github.com/appintheair/MRZParser/blob/develop/Package.swift)
 
 # MRZParser
 [MRZ](https://en.wikipedia.org/wiki/Machine-readable_passport) code parser for TD1(ID cards), TD2, TD3 (Passports), MRVA (Visas type A), MRVB (Visas type B) types.

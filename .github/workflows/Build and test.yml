@@ -17,5 +17,3 @@ jobs:
       run: swift test -v --enable-code-coverage
     - name: swift-codecov
       uses: mattpolzin/swift-codecov-action@0.5.0
-    - name: Codecov
-      uses: codecov/codecov-action@v2.0.1

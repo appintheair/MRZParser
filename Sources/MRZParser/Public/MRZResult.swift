@@ -7,11 +7,22 @@
 
 import Foundation
 
-public struct MRZResult: Hashable {
-    public enum MRZFormat {
-        case td1, td2, td3, mrva, mrvb
-    }
+public enum MRZFormat {
+    case td1, td2, td3
 
+    var lineLenth: Int {
+        switch self {
+        case .td1:
+            return 30
+        case .td2:
+            return 36
+        case .td3:
+            return 44
+        }
+    }
+}
+
+public struct MRZResult: Hashable {
     public enum DocumentType: CaseIterable {
         case visa
         case passport

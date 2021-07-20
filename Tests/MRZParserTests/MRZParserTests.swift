@@ -15,7 +15,7 @@
         override func setUp() {
             super.setUp()
 
-            parser = MRZParser()
+            parser = MRZParser(isOCRCorrectionEnabled: true)
         }
 
         func testTD1() {
@@ -163,7 +163,7 @@
                             L8988901C4XXX4009078F96121096ZE184226B<<<<<<
                             """
             let result = MRZResult(
-                format: .mrva,
+                format: .td3,
                 documentType: .visa,
                 countryCode: "UTO",
                 surnames: "ERIKSSON",
@@ -181,13 +181,12 @@
         }
 
         func testMRVB() {
-            let parser = MRZParser()
             let mrzString = """
                             V<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<
                             L8988901C4XXX4009078F9612109<<<<<<<<
                             """
             let result = MRZResult(
-                format: .mrvb,
+                format: .td2,
                 documentType: .visa,
                 countryCode: "UTO",
                 surnames: "ERIKSSON",

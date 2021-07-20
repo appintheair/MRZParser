@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MRZFieldFormatter {
+struct MRZFieldFormatter {
     private let isOCRCorrectionEnabled: Bool
     private let ocrCorrector = OCRCorrector()
     private let dateFormatter: DateFormatter = {
@@ -41,14 +41,28 @@ class MRZFieldFormatter {
         return names(from: rawValue)
     }
 
+    enum DateValidatedFieldType {
+        case birthdate
+        case expiryDate
+
+        var mrzFieldType: MRZFieldType {
+            switch self {
+            case .birthdate:
+                return MRZFieldType.birthdate
+            case .expiryDate:
+                return MRZFieldType.expiryDate
+            }
+        }
+    }
+
     func createDateValidatedField(
         from string: String,
         at startIndex: Int,
         length: Int,
-        fieldType: MRZFieldType
+        fieldType: DateValidatedFieldType
     ) -> ValidatedField<Date?> {
-        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length, fieldType: fieldType)
-        let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length, fieldType: fieldType)
+        let rawValue = getRawValue(from: string, startIndex: startIndex, length: length, fieldType: fieldType.mrzFieldType)
+        let checkDigit = getCheckDigit(from: string, endIndex: startIndex + length, fieldType: fieldType.mrzFieldType)
 
         let value: Date?
         switch fieldType {
@@ -56,8 +70,6 @@ class MRZFieldFormatter {
             value = birthdate(from: rawValue)
         case .expiryDate:
             value = expiryDate(from: rawValue)
-        default:
-            value = nil
         }
 
         return ValidatedField(value: value, rawValue: rawValue, checkDigit: checkDigit)

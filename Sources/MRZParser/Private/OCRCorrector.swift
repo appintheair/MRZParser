@@ -1,11 +1,9 @@
 //
-//  File.swift
+//  OCRCorrector.swift
 //  
 //
 //  Created by Roman Mazeev on 30.06.2021.
 //
-
-import Foundation
 
 struct OCRCorrector {
     func correct(_ string: String, fieldType: MRZFieldType) -> String {

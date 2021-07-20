@@ -5,10 +5,9 @@
 //  Created by Roman Mazeev on 15.06.2021.
 //
 
-import Foundation
-
 enum MRZFieldType {
-    case documentType, countryCode, names, documentNumber, nationality, birthdate, sex, expiryDate, personalNumber, optionalData, hash
+    case documentType, countryCode, names, documentNumber, nationality, birthdate, sex,
+         expiryDate, personalNumber, optionalData, hash
 }
 
 // MARK: - BasicFields

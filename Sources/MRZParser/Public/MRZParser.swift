@@ -18,16 +18,12 @@ public struct MRZParser {
 
     // MARK: Parsing
     public func parse(mrzLines: [String]) -> MRZResult? {
-        /// MRV-B and MRV-A types
-        let isVisaDocument = (mrzLines.first?.substring(0, to: 0) == String(MRZResult.DocumentType.visa.identifier))
-
         guard let format = mrzFormat(from: mrzLines) else { return nil }
 
         let mrzCode: MRZCode = MRZCodeFactory().create(
             from: mrzLines,
             format: format,
-            formatter: formatter,
-            isVisaDocument: isVisaDocument
+            formatter: formatter
         )
 
         guard mrzCode.isValid else { return nil }

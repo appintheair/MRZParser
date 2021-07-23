@@ -11,10 +11,9 @@ struct MRZCodeFactory {
     func create(
         from mrzLines: [String],
         format: MRZFormat,
-        formatter: MRZFieldFormatter,
-        isVisaDocument: Bool
+        formatter: MRZFieldFormatter
     ) -> MRZCode {
-        let firstLine = mrzLines[0]
+        let (firstLine, secondLine) = (mrzLines[0], mrzLines[1])
 
         let documentNumberField: ValidatedField<String>
         let birthdateField: ValidatedField<Date?>
@@ -28,7 +27,6 @@ struct MRZCodeFactory {
 
         switch format {
         case .td1:
-            let (firstLine, secondLine, thirdLine) = (mrzLines[0], mrzLines[1], mrzLines[2])
             documentNumberField = formatter.createStringValidatedField(
                 from: firstLine,
                 at: 5,
@@ -63,10 +61,14 @@ struct MRZCodeFactory {
                 fieldType: .optionalData,
                 checkDigitFollows: false
             )
-            namesField = formatter.createNamesField(from: thirdLine, at: 0, length: 29)
             finalCheckDigit = formatter.createField(from: secondLine, at: 29, length: 1, fieldType: .hash).rawValue
+
+            let thirdLine = mrzLines[2]
+            namesField = formatter.createNamesField(from: thirdLine, at: 0, length: 29)
         case .td2, .td3:
-            let (firstLine, secondLine) = (mrzLines[0], mrzLines[1])
+            /// MRV-B and MRV-A types
+            let isVisaDocument = firstLine.substring(0, to: 0) == MRZResult.DocumentType.visa.identifier
+
             documentNumberField = formatter.createStringValidatedField(from: secondLine, at: 0, length: 9, fieldType: .documentNumber
             )
             birthdateField = formatter.createDateValidatedField(

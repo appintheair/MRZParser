@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum MRZFormat {
+public enum MRZFormat: CaseIterable {
     case td1, td2, td3
 
     var lineLenth: Int {

@@ -20,6 +20,15 @@ public enum MRZFormat {
             return 44
         }
     }
+
+    var linesCount: Int {
+        switch self {
+        case .td1:
+            return 3
+        case .td2, .td3:
+            return 2
+        }
+    }
 }
 
 public struct MRZResult: Hashable {

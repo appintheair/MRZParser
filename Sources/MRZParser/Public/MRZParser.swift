@@ -58,10 +58,9 @@ public struct MRZParser {
     // MARK: MRZ-Format detection
     private func mrzFormat(from mrzLines: [String]) -> MRZFormat? {
         switch mrzLines.count {
-        case 2:
-            let possibleFormats: [MRZFormat] = [.td2, .td3]
-            return possibleFormats.first(where: { $0.lineLenth == uniformedLineLength(for: mrzLines) })
-        case 3:
+        case MRZFormat.td2.linesCount,  MRZFormat.td3.linesCount:
+            return [.td2, .td3].first(where: { $0.lineLenth == uniformedLineLength(for: mrzLines) })
+        case MRZFormat.td1.linesCount:
             return (uniformedLineLength(for: mrzLines) == MRZFormat.td1.lineLenth) ? .td1 : nil
         default:
             return nil

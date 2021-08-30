@@ -33,9 +33,7 @@ struct MRZCode {
                 fieldsValidate.append(optionalData2Field)
             }
 
-            let compositedValue = fieldsValidate
-                .filter { $0.isValid }
-                .reduce("", { $0 + $1.rawValue + $1.checkDigit })
+            let compositedValue = fieldsValidate.reduce("", { $0 + $1.rawValue + $1.checkDigit })
             let isCompositedValueValid = MRZFieldFormatter.isValueValid(compositedValue, checkDigit: finalCheckDigit)
             return documentNumberField.isValid &&
                 birthdateField.isValid &&

@@ -38,16 +38,16 @@ public struct MRZResult: Hashable {
         case id
         case undefined
 
-        var identifier: String {
+        var identifiers: [String] {
             switch self {
             case .visa:
-                return "V"
+                return ["V"]
             case .passport:
-                return "P"
+                return ["P", "PN"]
             case .id:
-                return "I"
+                return ["I"]
             case .undefined:
-                return ""
+                return []
             }
         }
     }

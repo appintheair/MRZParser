@@ -33,7 +33,7 @@ public struct MRZParser {
             documentType: {
                 guard let documentTypeFirstElement = mrzCode.documentTypeField.value.first else { return .undefined }
                 return MRZResult.DocumentType.allCases.first(where: {
-                    $0.identifier == String(documentTypeFirstElement)
+                    $0.identifiers.contains(String(documentTypeFirstElement))
                 }) ?? .undefined
             }(),
             countryCode: mrzCode.countryCodeField.value,

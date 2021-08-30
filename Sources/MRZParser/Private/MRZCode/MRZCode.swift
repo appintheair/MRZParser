@@ -18,10 +18,10 @@ struct MRZCode {
     var optionalDataField: ValidatedField<String>
     var optionalData2Field: ValidatedField<String>?
     var namesField: NamesField
-    var finalCheckDigit: String?
+    var finalCheckDigit: String
 
     var isValid: Bool {
-        if let finalCheckDigit = finalCheckDigit {
+        if !finalCheckDigit.isEmpty {
             var fieldsValidate: [ValidatedFieldProtocol] = [
                 documentNumberField,
                 birthdateField,

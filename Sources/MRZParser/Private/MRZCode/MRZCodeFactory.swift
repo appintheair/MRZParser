@@ -23,7 +23,7 @@ struct MRZCodeFactory {
         let optionalDataField: ValidatedField<String>
         let optionalData2Field: ValidatedField<String>?
         let namesField: NamesField
-        let finalCheckDigit: String?
+        let finalCheckDigit: String
 
         switch format {
         case .td1:
@@ -93,7 +93,7 @@ struct MRZCodeFactory {
                 )
                 optionalData2Field = nil
                 namesField = formatter.createNamesField(from: firstLine, at: 5, length: 31)
-                finalCheckDigit = isVisaDocument ? nil : formatter.createField(
+                finalCheckDigit = isVisaDocument ? "" : formatter.createField(
                     from: secondLine, at: 35, length: 1, fieldType: .hash
                 ).rawValue
             } else {
@@ -114,7 +114,7 @@ struct MRZCodeFactory {
                 }()
                 optionalData2Field = nil
                 namesField = formatter.createNamesField(from: firstLine, at: 5, length: 39)
-                finalCheckDigit = isVisaDocument ? nil : formatter.createField(
+                finalCheckDigit = isVisaDocument ? "" : formatter.createField(
                     from: secondLine,
                     at: 43,
                     length: 1,

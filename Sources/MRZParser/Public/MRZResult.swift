@@ -36,6 +36,7 @@ public struct MRZResult: Hashable {
         case visa
         case passport
         case id
+        case residencePermit
         case undefined
 
         var identifiers: [String] {
@@ -46,6 +47,8 @@ public struct MRZResult: Hashable {
                 return ["P", "PN"]
             case .id:
                 return ["I"]
+            case .residencePermit:
+                return ["IR"]
             case .undefined:
                 return []
             }

@@ -124,6 +124,7 @@ struct MRZCodeFactory {
         }
 
         return MRZCode(
+            format: format,
             documentTypeField: formatter.createField(from: firstLine, at: 0, length: 2, fieldType: .documentType),
             countryCodeField: formatter.createField(from: firstLine, at: 2, length: 3, fieldType: .countryCode),
             documentNumberField: documentNumberField,

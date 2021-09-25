@@ -154,7 +154,7 @@ struct MRZFieldFormatter {
               let parsedYear = Int(string.substring(0, to: 1)) else { return nil }
         let currentYear = Calendar.current.component(.year, from: Date()) - Self.currentCentennial * 100
         let boundaryYear = currentYear + 50
-        let centennial = (parsedYear >= boundaryYear) ? String(Self.previousCentennial) : String(Self.currentCentennial)
+        let centennial = parsedYear >= boundaryYear ? String(Self.previousCentennial) : String(Self.currentCentennial)
         return dateFormatter.date(from: centennial + string)
     }
 
@@ -173,7 +173,7 @@ struct MRZFieldFormatter {
     static func checkDigit(for value: String) -> Int? {
         var sum: Int = 0
         for (index, character) in value.enumerated() {
-            guard let number = Self.number(for: character) else { return nil }
+            guard let number = number(for: character) else { return nil }
             let weights = [7, 3, 1]
             sum += number * weights[index % 3]
         }

@@ -7,6 +7,7 @@
 
 struct OCRCorrector {
     func correct(_ string: String, fieldType: MRZFieldType) -> String {
+        let string = string.uppercased()
         switch fieldType {
         // TODO: Check correction of dates (month & day)
         case .birthdate, .expiryDate, .hash:
@@ -17,7 +18,7 @@ struct OCRCorrector {
         // TODO: Improve correction (take into account "M" & "<" too)
         case .sex:
             return string.replace("P", with: "F")
-        default:
+        case .documentNumber, .personalNumber, .optionalData:
             return string
         }
     }

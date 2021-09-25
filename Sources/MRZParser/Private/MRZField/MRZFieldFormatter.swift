@@ -8,6 +8,9 @@
 import Foundation
 
 struct MRZFieldFormatter {
+    private static let currentCentennial = Calendar.current.component(.year, from: Date()) / 100
+    private static let previousCentennial = Self.currentCentennial - 1
+
     private let isOCRCorrectionEnabled: Bool
     private let ocrCorrector = OCRCorrector()
     private let dateFormatter: DateFormatter = {
@@ -141,15 +144,17 @@ struct MRZFieldFormatter {
     private func birthdate(from string: String) -> Date? {
         guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)),
               let parsedYear = Int(string.substring(0, to: 1)) else { return nil }
-        let currentYear = Calendar.current.component(.year, from: Date()) - 2000
-        let centennial = (parsedYear > currentYear) ? "19" : "20"
+        let currentYear = Calendar.current.component(.year, from: Date()) - Self.currentCentennial * 100
+        let centennial = (parsedYear > currentYear) ? String(Self.previousCentennial) : String(Self.currentCentennial)
         return dateFormatter.date(from: centennial + string)
     }
 
     private func expiryDate(from string: String) -> Date? {
         guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)),
               let parsedYear = Int(string.substring(0, to: 1)) else { return nil }
-        let centennial = (parsedYear >= 70) ? "19" : "20"
+        let currentYear = Calendar.current.component(.year, from: Date()) - Self.currentCentennial * 100
+        let boundaryYear = currentYear + 50
+        let centennial = parsedYear >= boundaryYear ? String(Self.previousCentennial) : String(Self.currentCentennial)
         return dateFormatter.date(from: centennial + string)
     }
 
@@ -162,25 +167,33 @@ struct MRZFieldFormatter {
             return checkDigit == "<" ? rawValue.trimmingFillers.isEmpty : false
         }
 
-        var total = 0
+        return Self.checkDigit(for: rawValue) == numericCheckDigit
+    }
 
-        for (index, character) in rawValue.enumerated() {
-            guard let unicodeScalar = character.unicodeScalars.first else { return false }
-            let charValue: Int
-
-            if CharacterSet.uppercaseLetters.contains(unicodeScalar) {
-                charValue = Int(10 + unicodeScalar.value) - 65
-            } else if CharacterSet.decimalDigits.contains(unicodeScalar), let digit = Int(String(character)) {
-                charValue = digit
-            } else if character == "<" {
-                charValue = 0
-            } else {
-                return false
-            }
-
-            total += charValue * [7, 3, 1][index % 3]
+    static func checkDigit(for value: String) -> Int? {
+        var sum: Int = 0
+        for (index, character) in value.enumerated() {
+            guard let number = number(for: character) else { return nil }
+            let weights = [7, 3, 1]
+            sum += number * weights[index % 3]
         }
+        return sum % 10
+    }
 
-        return total % 10 == numericCheckDigit
+    // <  A   B   C   D   E   F   G   H   I   J   K   L   M   N   O   P   Q   R   S   T   U   V   W   X   Y   Z
+    // 0  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+    private static func number(for character: Character) -> Int? {
+        guard let unicodeScalar = character.unicodeScalars.first else { return nil }
+        let number: Int
+        if CharacterSet.uppercaseLetters.contains(unicodeScalar) {
+            number = Int(10 + unicodeScalar.value) - 65
+        } else if CharacterSet.decimalDigits.contains(unicodeScalar), let digit = character.wholeNumberValue {
+            number = digit
+        } else if character == "<" {
+            number = 0
+        } else {
+            return nil
+        }
+        return number
     }
 }

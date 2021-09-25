@@ -59,9 +59,9 @@ public struct MRZParser {
     private func mrzFormat(from mrzLines: [String]) -> MRZFormat? {
         switch mrzLines.count {
         case MRZFormat.td2.linesCount,  MRZFormat.td3.linesCount:
-            return [.td2, .td3].first(where: { $0.lineLenth == uniformedLineLength(for: mrzLines) })
+            return [.td2, .td3].first(where: { $0.lineLength == uniformedLineLength(for: mrzLines) })
         case MRZFormat.td1.linesCount:
-            return (uniformedLineLength(for: mrzLines) == MRZFormat.td1.lineLenth) ? .td1 : nil
+            return (uniformedLineLength(for: mrzLines) == MRZFormat.td1.lineLength) ? .td1 : nil
         default:
             return nil
         }

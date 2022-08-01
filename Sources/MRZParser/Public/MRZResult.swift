@@ -36,21 +36,18 @@ public struct MRZResult: Hashable {
         case visa
         case passport
         case id
-        case residencePermit
         case undefined
 
-        var identifiers: [String] {
+        var identifier: Character {
             switch self {
             case .visa:
-                return ["V"]
+                return "V"
             case .passport:
-                return ["P", "PN"]
+                return "P"
             case .id:
-                return ["I"]
-            case .residencePermit:
-                return ["IR"]
+                return "I"
             case .undefined:
-                return []
+                return "_"
             }
         }
     }
@@ -74,6 +71,7 @@ public struct MRZResult: Hashable {
 
     public let format: MRZFormat
     public let documentType: DocumentType
+    public let documentTypeAdditional: Character?
     public let countryCode: String
     public let surnames: String
     public let givenNames: String
@@ -89,6 +87,7 @@ public struct MRZResult: Hashable {
     public init(
         format: MRZFormat,
         documentType: DocumentType,
+        documentTypeAdditional: Character?,
         countryCode: String,
         surnames: String,
         givenNames: String,
@@ -102,6 +101,7 @@ public struct MRZResult: Hashable {
     ) {
         self.format = format
         self.documentType = documentType
+        self.documentTypeAdditional = documentTypeAdditional
         self.countryCode = countryCode
         self.surnames = surnames
         self.givenNames = givenNames

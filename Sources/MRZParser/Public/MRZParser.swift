@@ -28,14 +28,12 @@ public struct MRZParser {
 
         guard mrzCode.isValid else { return nil }
 
+        let documentType = mrzCode.documentTypeField.value
+
         return .init(
             format: format,
-            documentType: {
-                guard let documentTypeFirstElement = mrzCode.documentTypeField.value.first else { return .undefined }
-                return MRZResult.DocumentType.allCases.first(where: {
-                    $0.identifiers.contains(String(documentTypeFirstElement))
-                }) ?? .undefined
-            }(),
+            documentType: MRZResult.DocumentType.allCases.first { $0.identifier == documentType.first } ?? .undefined,
+            documentTypeAdditional: documentType.count == 2 ? documentType.last : nil,
             countryCode: mrzCode.countryCodeField.value,
             surnames: mrzCode.namesField.surnames,
             givenNames: mrzCode.namesField.givenNames,

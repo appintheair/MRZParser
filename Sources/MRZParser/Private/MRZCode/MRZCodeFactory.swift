@@ -67,7 +67,7 @@ struct MRZCodeFactory {
             namesField = formatter.createNamesField(from: thirdLine, at: 0, length: 29)
         case .td2, .td3:
             /// MRV-B and MRV-A types
-            let isVisaDocument =  MRZResult.DocumentType.visa.identifiers.contains(firstLine.substring(0, to: 0))
+            let isVisaDocument = firstLine.first == MRZResult.DocumentType.visa.identifier
 
             documentNumberField = formatter.createStringValidatedField(from: secondLine, at: 0, length: 9, fieldType: .documentNumber
             )

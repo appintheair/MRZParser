@@ -33,6 +33,7 @@ final class MRZParserTests: XCTestCase {
         let result = MRZResult(
             format: .td1,
             documentType: .id,
+            documentTypeAdditional: nil,
             countryCode: "UTO",
             surnames: "ERIKSSON",
             givenNames: "ANNA MARIA",
@@ -50,12 +51,13 @@ final class MRZParserTests: XCTestCase {
 
     func testTD2() {
         let mrzString = """
-                        I<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<
+                        IRUTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<
                         D231458907UTO7408122F1204159<<<<<<<6
                         """
         let result = MRZResult(
             format: .td2,
             documentType: .id,
+            documentTypeAdditional: "R",
             countryCode: "UTO",
             surnames: "ERIKSSON",
             givenNames: "ANNA MARIA",
@@ -79,6 +81,7 @@ final class MRZParserTests: XCTestCase {
         let result = MRZResult(
             format: .td3,
             documentType: .passport,
+            documentTypeAdditional: nil,
             countryCode: "UTO",
             surnames: "ERIKSSON",
             givenNames: "ANNA MARIA",
@@ -102,6 +105,7 @@ final class MRZParserTests: XCTestCase {
         let result = MRZResult(
             format: .td3,
             documentType: .passport,
+            documentTypeAdditional: nil,
             countryCode: "RUS",
             surnames: "IMIAREK",
             givenNames: "EVGENII",
@@ -125,6 +129,7 @@ final class MRZParserTests: XCTestCase {
         let result = MRZResult(
             format: .td3,
             documentType: .passport,
+            documentTypeAdditional: "N",
             countryCode: "RUS",
             surnames: "ZDRIL7K",
             givenNames: "SERGEQ ANATOL9EVI3",
@@ -148,6 +153,7 @@ final class MRZParserTests: XCTestCase {
         let result = MRZResult(
             format: .td3,
             documentType: .passport,
+            documentTypeAdditional: nil,
             countryCode: "NLD",
             surnames: "DE BRUIJN",
             givenNames: "WILLEKE LISELOTTE",
@@ -171,6 +177,7 @@ final class MRZParserTests: XCTestCase {
         let result = MRZResult(
             format: .td3,
             documentType: .visa,
+            documentTypeAdditional: nil,
             countryCode: "UTO",
             surnames: "ERIKSSON",
             givenNames: "ANNA MARIA",
@@ -194,6 +201,7 @@ final class MRZParserTests: XCTestCase {
         let result = MRZResult(
             format: .td2,
             documentType: .visa,
+            documentTypeAdditional: nil,
             countryCode: "UTO",
             surnames: "ERIKSSON",
             givenNames: "ANNA MARIA",
